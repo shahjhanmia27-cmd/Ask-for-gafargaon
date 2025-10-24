@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ask For Gafargaon</title>
+  <style>
+    body {
+      font-family: "Noto Sans Bengali", sans-serif;
+      background: #f0f4f8;
+      color: #222;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: #007b5f;
+      color: white;
+      padding: 15px;
+      border-radius: 0 0 15px 15px;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .tabs button {
+      background: #ddd;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 5px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .tabs button.active {
+      background: #007b5f;
+      color: white;
+    }
+
+    section {
+      display: none;
+      margin-top: 20px;
+    }
+
+    section.visible {
+      display: block;
+    }
+
+    #user-input {
+      width: 80%;
+      height: 80px;
+      margin-bottom: 10px;
+      padding: 10px;
+    }
+
+    #ask-btn {
+      padding: 10px 20px;
+      background: #007b5f;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    #ai-response {
+      margin-top: 15px;
+      padding: 10px;
+      background: #fff;
+      border-radius: 10px;
+      width: 80%;
+      margin: 15px auto;
+    }
+
+    #search {
+      width: 80%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    #emergency-list {
+      margin-top: 15px;
+      text-align: left;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Ask For Gafargaon</h1>
+  <p>জরুরি তথ্য ও এআই সহায়তা একসাথে</p>
+</header>
+
+<main>
+  <div class="tabs">
+    <button id="ai-tab" class="active">🤖 AI প্রশ্ন করুন</button>
+    <button id="emergency-tab">🚨 জরুরি তথ্য</button>
+  </div>
+
+  <section id="ai-section" class="visible">
+    <textarea id="user-input" placeholder="আপনার প্রশ্ন লিখুন..."></textarea>
+    <button id="ask-btn">জিজ্ঞাসা করুন</button>
+    <div id="ai-response"></div>
+  </section>
+
+  <section id="emergency-section">
+    <input type="text" id="search" placeholder="কোন জায়গা খুঁজছেন? যেমন: হাসপাতাল">
+    <div id="emergency-list"></div>
+  </section>
+</main>
+
+<footer>
+  <p>Developed by Nayem 💚 | Ask For Gafargaon © 2025</p>
+</footer>
+
+<script>
+// ---------------- Tab Switcher ----------------
+const aiTab = document.getElementById("ai-tab");
+const emTab = document.getElementById("emergency-tab");
+const aiSection = document.getElementById("ai-section");
+const emSection = document.getElementById("emergency-section");
+
+aiTab.addEventListener("click", () => {
+  aiTab.classList.add("active");
+  emTab.classList.remove("active");
+  aiSection.classList.add("visible");
+  emSection.classList.remove("visible");
+});
+
+emTab.addEventListener("click", () => {
+  emTab.classList.add("active");
+  aiTab.classList.remove("active");
+  emSection.classList.add("visible");
+  aiSection.classList.remove("visible");
+});
+
+// ---------------- AI Response ----------------
+document.getElementById("ask-btn").addEventListener("click", () => {
+  const question = document.getElementById("user-input").value.trim();
+  const responseDiv = document.getElementById("ai-response");
+
+  if (!question) {
+    responseDiv.textContent = "দয়া করে একটি প্রশ্ন লিখুন!";
+    return;
+  }
+
+  const responses = [
+    "গফরগাঁও একটি চমৎকার উপজেলা, যার ইতিহাস সমৃদ্ধ।",
+    "আপনার প্রশ্নটা বেশ মজার! তবে আরও নির্দিষ্ট করলে ভালো উত্তর দিতে পারতাম।",
+    "এটি সম্পর্কে বিস্তারিত তথ্য শীঘ্রই যুক্ত করা হবে।",
+    "গফরগাঁওর মানুষ খুব আন্তরিক ও অতিথিপরায়ণ!",
+  ];
+
+  const random = Math.floor(Math.random() * responses.length);
+  responseDiv.textContent = responses[random];
+});
+
+// ---------------- Emergency Data ----------------
+const emergencyData = [
+  {place:"Gafargaon Police Station", type:"Police", number:"01320-103321", notes:"Main police station"},
+  {place:"Gafargaon Fire Service", type:"Fire Service", number:"TBD", notes:"Local fire & rescue"},
+  {place:"Gafargaon Adhunik Hospital", type:"Hospital", number:"01958212259", notes:"24/7 emergency"},
+  {place:"Nearest Ambulance Service (Mymensingh)", type:"Ambulance", number:"01758-845430", notes:"Regional ambulance"},
+  {place:"Post Office (Gafargaon)", type:"Postal", number:"2230", notes:"Postal code & post office"},
+  {place:"Gafargaon Govt College", type:"Education", number:"01671078165", notes:"College contact"},
+  {place:"Child Helpline / Women Helpline", type:"Support", number:"TBD", notes:"Verified helpline numbers"},
+];
+
+const listDiv = document.getElementById("emergency-list");
+
+function displayEmergency(data) {
+  listDiv.innerHTML = "";
+  data.forEach(item => {
+    const div = document.createElement("div");
+    div.innerHTML = <strong>${item.place}</strong><br>ধরন: ${item.type}<br>নম্বর: ${item.number}<br>বিস্তারিত: ${item.notes}<hr>;
+    listDiv.appendChild(div);
+  });
+}
+
+displayEmergency(emergencyData);
+
+// ---------------- Search Function ----------------
+document.getElementById("search").addEventListener("input", (e) => {
+  const term = e.target.value.toLowerCase();
+  const filtered = emergencyData.filter(item => 
+    item.place.toLowerCase().includes(term) || item.type.toLowerCase().includes(term)
+  );
+  displayEmergency(filtered);
+});
+</script>
+
+</body>
+</html>
